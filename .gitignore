@@ -1,1 +1,3 @@
 notebooks/.ipynb_checkpoints/
+data/*.tgz
+data/de-en
