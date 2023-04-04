@@ -1,18 +1,25 @@
 from torch import nn
+from embeddings import ComputeEmbeddings
+from encoder import Encoder
+from decoder import Decoder
+
 
 class Transformer(nn.Module):
 
-    def __init__(self, *args, **kwargs) -> None:
+    def __init__(self, src_vocab_size, tgt_vocab_size) -> None:
         super().__init__()
-        # Initate the input embeddings here
-        # Initate the positional embeddings here
-        # Initiate the encoder here
-        # Initiate the decoder here
-        # Initiate the end linear layer here
-        pass
+        self.input_embeddings = ComputeEmbeddings(src_vocab_size)
+        self.output_embeddings = ComputeEmbeddings(tgt_vocab_size)
+        self.encoder = Encoder()
+        self.decoder = Decoder()
+        self.linear_layer = nn.Linear(512, 256)  # Confirm the output size
     
     def forward(self, inputs, outputs):
-        # Pass the x and y through the embeddings and add the position embeddings
-        # Pass the results through the encoder
-        # pass the outputs and the encoder output through the decoder
-        pass
+        embed_inputs = self.input_embeddings(inputs)
+        embed_outputs = self.output_embeddings(outputs)
+
+        encoder_outputs = self.encoder(embed_inputs)
+        decoder_outputs = self.decoder(encoder_outputs, embed_outputs)
+        
+        output = self.linear_layer(decoder_outputs)
+        return nn.Softmax(output)
