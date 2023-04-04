@@ -21,7 +21,8 @@ class DecoderLayer(nn.Module):
         super().__init__()
         self.masked_attention = MultiHeadAttention()
         self.decoder_attention = MultiHeadAttention()
-        self.decoder_linear = nn.Linear(512, 2048)
+        self.decoder_linear1 = nn.Linear(512, 2048)
+        self.decoder_linear2 = nn.Linear(2048, 512)
         self.layer_norm = nn.LayerNorm(512)
 
     def forward(self, encoder_outputs, outputs):
@@ -44,3 +45,6 @@ class DecoderLayer(nn.Module):
                                 self.decoder_linear(stage_two_output)
                                 )
         return stage_three_output
+
+    def decoder_linear(self, inputs):
+        return self.decoder_linear2(self.decoder_linear1(inputs).relu())
