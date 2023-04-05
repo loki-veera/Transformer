@@ -3,3 +3,6 @@ data/*.tgz
 data/de-en
 .idea/
 .data/
+tests/__pycache__
+.vscode/
+src/Transformer/model/__pycache__
