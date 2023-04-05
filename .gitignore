@@ -6,3 +6,4 @@ data/de-en
 tests/__pycache__
 .vscode/
 src/Transformer/model/__pycache__
+__pycache__/

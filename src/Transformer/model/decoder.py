@@ -1,14 +1,15 @@
-from torch import nn
+"""Decoder definition."""
+
 from multi_head_attention import MultiHeadAttention
+from torch import nn
+
 
 class Decoder(nn.Module):
-    def __init__(self, N = 6) -> None:
+    """Decoder model."""
+
+    def __init__(self, n=6) -> None:
         super().__init__()
-        self.deocder = nn.ModuleList(
-                [
-                    DecoderLayer()
-                    for _ in range(N)
-                ])
+        self.deocder = nn.ModuleList([DecoderLayer() for _ in range(n)])
 
     def forward(self, encoder_outputs, outputs):
         for decoder_layer in self.deocder:
@@ -17,6 +18,8 @@ class Decoder(nn.Module):
 
 
 class DecoderLayer(nn.Module):
+    """Decoder definition."""
+
     def __init__(self) -> None:
         super().__init__()
         self.masked_attention = MultiHeadAttention()
@@ -27,23 +30,15 @@ class DecoderLayer(nn.Module):
 
     def forward(self, encoder_outputs, outputs):
         stage_one_output = self.layer_norm(
-                            outputs + 
-                            self.masked_attention(outputs,
-                                                  outputs,
-                                                  outputs
-                                                )
-                            )
+            outputs + self.masked_attention(outputs, outputs, outputs)
+        )
         stage_two_output = self.layer_norm(
-                            stage_one_output +
-                            self.decoder_attention(encoder_outputs,
-                                                   encoder_outputs,
-                                                   stage_two_output
-                                                   )
-                            )
+            stage_one_output
+            + self.decoder_attention(encoder_outputs, encoder_outputs, stage_one_output)
+        )
         stage_three_output = self.layer_norm(
-                                stage_two_output +
-                                self.decoder_linear(stage_two_output)
-                                )
+            stage_two_output + self.decoder_linear(stage_two_output)
+        )
         return stage_three_output
 
     def decoder_linear(self, inputs):

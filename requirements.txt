@@ -1,2 +1,4 @@
 wget
 torch
+nox
+numpy

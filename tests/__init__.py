@@ -1,1 +1,1 @@
-"""Run pytests"""
+"""Run pytests."""

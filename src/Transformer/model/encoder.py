@@ -1,14 +1,15 @@
-from torch import nn
+"""Encoder definition."""
+
 from multi_head_attention import MultiHeadAttention
+from torch import nn
+
 
 class Encoder(nn.Module):
-    def __init__(self, N = 6) -> None:
+    """Encoder model."""
+
+    def __init__(self, n=6) -> None:
         super().__init__()
-        self.encoder = nn.ModuleList(
-                [
-                    EncoderLayer() 
-                    for _ in range(N)
-                ])
+        self.encoder = nn.ModuleList([EncoderLayer() for _ in range(n)])
 
     def forward(self, inputs):
         for encoder_layer in self.encoder:
@@ -17,6 +18,8 @@ class Encoder(nn.Module):
 
 
 class EncoderLayer(nn.Module):
+    """Each layer in encoder."""
+
     def __init__(self) -> None:
         super().__init__()
         self.encoder_attention = MultiHeadAttention()
@@ -26,18 +29,12 @@ class EncoderLayer(nn.Module):
 
     def forward(self, inputs):
         stage_one_output = self.layer_norm(
-                            inputs +
-                            self.encoder_attention(inputs,
-                                                   inputs,
-                                                   inputs
-                                                   )
-                            )
+            inputs + self.encoder_attention(inputs, inputs, inputs)
+        )
         stage_two_output = self.layer_norm(
-                            stage_one_output +
-                            self.encoder_linear(stage_one_output)
-                            )
+            stage_one_output + self.encoder_linear(stage_one_output)
+        )
         return stage_two_output
-    
+
     def encoder_linear(self, inputs):
         return self.encoder_linear2(self.encoder_linear1(inputs).relu())
-
