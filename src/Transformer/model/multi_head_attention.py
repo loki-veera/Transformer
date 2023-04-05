@@ -3,7 +3,10 @@ from torch import nn
 class MultiHeadAttention(nn.Module):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
-        # Instantitate the 4 linear layers (for Q, K, V and output Linear)
+        self.linear_q = nn.Linear(512, 64)
+        self.linear_k = nn.Linear(512, 64)
+        self.linear_v = nn.Linear(512, 64)
+        self.attention_output = nn.Linear(8*64, 512)
         pass
 
     def forward(self, query, key, value):
