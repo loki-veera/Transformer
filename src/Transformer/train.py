@@ -3,7 +3,7 @@ import torch
 from tqdm import tqdm
 
 from .dataloader import TextDataset
-from .model.model import Transformer
+from .model.Transformer import Transformer
 
 
 def train(model, device, loader, optimizer, epoch, loss):

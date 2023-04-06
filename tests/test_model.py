@@ -4,7 +4,7 @@ import torch
 
 from src.Transformer.model.decoder import Decoder
 from src.Transformer.model.encoder import Encoder
-from src.Transformer.model.model import Transformer
+from src.Transformer.model.Transformer import Transformer
 
 
 def test_encoder():
