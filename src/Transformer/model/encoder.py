@@ -1,6 +1,6 @@
 """Encoder definition."""
 
-from multi_head_attention import MultiHeadAttention
+from .multi_head_attention import MultiHeadAttention
 from torch import nn
 
 
