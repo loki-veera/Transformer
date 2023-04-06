@@ -1,13 +1,14 @@
 """Test the embeddings."""
 
-# import torch
+import torch
 
-# from src.Transformer.model.embeddings import ComputeEmbeddings
+from src.Transformer.model.embeddings import ComputeEmbeddings
 
-# def test_embeddings():
-#     """Test embeddings."""
-#     torch.manual_seed(0)
-#     inputs = torch.randn(32, 10, 512)
-#     embed = ComputeEmbeddings()
-#     embeddings = embed(inputs)
-#     assert embeddings.shape == inputs.shape
+
+def test_embeddings():
+    """Test embeddings."""
+    torch.manual_seed(0)
+    inputs = torch.randint(100, (32, 10))
+    embed = ComputeEmbeddings(vocab_size=100)
+    embeddings = embed(inputs)
+    assert list(embeddings.shape) == [32, 10, 512]

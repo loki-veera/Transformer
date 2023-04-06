@@ -22,4 +22,4 @@ class Transformer(nn.Module):
         decoder_outputs = self.decoder(encoder_outputs, embed_outputs)
 
         output = self.linear_layer(decoder_outputs)
-        return nn.Softmax(output)
+        return nn.functional.softmax(output, dim=-1)
