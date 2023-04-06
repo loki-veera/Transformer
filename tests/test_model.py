@@ -1,9 +1,9 @@
 """Test the encoder and decoder forward passes."""
 
 import torch
-from src.Transformer.model.encoder import Encoder
+
 from src.Transformer.model.decoder import Decoder
-from src.Transformer.model.model import Transformer
+from src.Transformer.model.encoder import Encoder
 
 
 def test_encoder():
@@ -14,6 +14,7 @@ def test_encoder():
     encoder_output = encoder(inputs)
     assert list(encoder_output.shape) == [32, 10, 512]
 
+
 def test_decoder():
     """Test decoder forward pass using shapes."""
     encoder_outputs = torch.randn(32, 10, 512)
@@ -21,4 +22,3 @@ def test_decoder():
     decoder = Decoder()
     decoder_output = decoder(encoder_outputs, decoder_inputs)
     assert list(decoder_output.shape) == [32, 10, 512]
-

@@ -1,8 +1,8 @@
 """Decoder definition."""
 
-from .multi_head_attention import MultiHeadAttention
 from torch import nn
-import torch
+
+from .multi_head_attention import MultiHeadAttention
 
 
 class Decoder(nn.Module):

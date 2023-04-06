@@ -1,7 +1,8 @@
 """Encoder definition."""
 
-from .multi_head_attention import MultiHeadAttention
 from torch import nn
+
+from .multi_head_attention import MultiHeadAttention
 
 
 class Encoder(nn.Module):

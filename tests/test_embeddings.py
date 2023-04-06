@@ -1,9 +1,8 @@
 """Test the embeddings."""
 
-import torch
+# import torch
 
-from src.Transformer.model.embeddings import ComputeEmbeddings
-
+# from src.Transformer.model.embeddings import ComputeEmbeddings
 
 # def test_embeddings():
 #     """Test embeddings."""
