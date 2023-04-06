@@ -34,7 +34,8 @@ def test_model():
     n_tokens = 10
     encoder_inputs = torch.randint(99, (batch_size, n_tokens))
     decoder_inputs = torch.randint(99, (batch_size, n_tokens))
-    transformer = Transformer(src_vocab_size, tgt_vocab_size)
+    device = "cpu"
+    transformer = Transformer(src_vocab_size, tgt_vocab_size, device)
     outputs = transformer(encoder_inputs, decoder_inputs)
     assert list(outputs.shape) == [batch_size, n_tokens, tgt_vocab_size]
 

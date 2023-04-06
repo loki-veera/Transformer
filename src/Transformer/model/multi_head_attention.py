@@ -11,7 +11,9 @@ class MultiHeadAttention(nn.Module):
         self.linear_v = nn.Linear(64, 64)
         self.attention_output = nn.Linear(num_attention_heads * 64, 512)
         self.num_attention_heads = num_attention_heads
-        self.dummy_param = nn.Parameter(torch.sqrt(torch.Tensor([64])),requires_grad=False)
+        self.dummy_param = nn.Parameter(
+            torch.sqrt(torch.Tensor([64])), requires_grad=False
+        )
         pass
 
     def forward(self, query, key, value, mask=None):

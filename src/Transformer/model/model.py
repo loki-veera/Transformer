@@ -13,7 +13,7 @@ class Transformer(nn.Module):
         self.output_embeddings = ComputeEmbeddings(tgt_vocab_size)
         self.encoder = Encoder()
         self.decoder = Decoder()
-        self.linear_layer = nn.Linear(512, tgt_vocab_size) 
+        self.linear_layer = nn.Linear(512, tgt_vocab_size)
         self.device = device
 
     def forward(self, inputs, outputs):
