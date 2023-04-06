@@ -13,7 +13,7 @@ class MultiHeadAttention(nn.Module):
         self.num_attention_heads = num_attention_heads
         pass
 
-    def forward(self, query, key, value):
+    def forward(self, query, key, value, mask=None):
         bs = key.shape[0]
         single_embed_size = int(key.shape[-1] / self.num_attention_heads)
         tokens = key.shape[1]
@@ -29,16 +29,19 @@ class MultiHeadAttention(nn.Module):
         v = torch.einsum("ijkl -> ikjl", [self.linear_v(value)])
 
         # Compute scaled dot product attention
-        attention_weights = self.scaled_dot_product_attention(q, k, v)
+        attention_weights = self.scaled_dot_product_attention(q, k, v, mask)
 
         # Concatenate and return the output
         concatenated_weights = attention_weights.reshape(bs, tokens, -1)
         out = self.attention_output(concatenated_weights)
         return out
 
-    def scaled_dot_product_attention(self, q, k, v):
+    def scaled_dot_product_attention(self, q, k, v, mask):
         # Compute the dot product
         dot_product = torch.einsum("...kl, ...rl -> ...kr", [q, k])
+
+        if mask is not None:
+            dot_product = dot_product.masked_fill(mask == 0, 1e-9)
         # Scale the dot product
         dot_product = dot_product / torch.sqrt(torch.Tensor([64]))
         # Compute the softmax and multiply with values

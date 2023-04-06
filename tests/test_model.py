@@ -20,8 +20,9 @@ def test_decoder():
     """Test decoder forward pass using shapes."""
     encoder_outputs = torch.randn(32, 10, 512)
     decoder_inputs = torch.randn(32, 10, 512)
+    mask = __compute_mask(decoder_inputs)
     decoder = Decoder()
-    decoder_output = decoder(encoder_outputs, decoder_inputs)
+    decoder_output = decoder(encoder_outputs, decoder_inputs, mask)
     assert list(decoder_output.shape) == [32, 10, 512]
 
 
@@ -36,3 +37,10 @@ def test_model():
     transformer = Transformer(src_vocab_size, tgt_vocab_size)
     outputs = transformer(encoder_inputs, decoder_inputs)
     assert list(outputs.shape) == [batch_size, n_tokens, tgt_vocab_size]
+
+
+def __compute_mask(output_embeds):
+    mask = torch.tril(
+        torch.ones(output_embeds.shape[1], output_embeds.shape[1])
+    ).expand(output_embeds.shape[0], 1, output_embeds.shape[1], output_embeds.shape[1])
+    return mask

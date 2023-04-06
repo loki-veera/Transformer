@@ -12,9 +12,9 @@ class Decoder(nn.Module):
         super().__init__()
         self.deocder = nn.ModuleList([DecoderLayer() for _ in range(n)])
 
-    def forward(self, encoder_outputs, outputs):
+    def forward(self, encoder_outputs, outputs, mask):
         for decoder_layer in self.deocder:
-            outputs = decoder_layer(encoder_outputs, outputs)
+            outputs = decoder_layer(encoder_outputs, outputs, mask)
         return outputs
 
 
@@ -29,9 +29,9 @@ class DecoderLayer(nn.Module):
         self.decoder_linear2 = nn.Linear(2048, 512)
         self.layer_norm = nn.LayerNorm(512)
 
-    def forward(self, encoder_outputs, outputs):
+    def forward(self, encoder_outputs, outputs, mask):
         stage_one_output = self.layer_norm(
-            outputs + self.masked_attention(outputs, outputs, outputs)
+            outputs + self.masked_attention(outputs, outputs, outputs, mask)
         )
         stage_two_output = self.layer_norm(
             stage_one_output
