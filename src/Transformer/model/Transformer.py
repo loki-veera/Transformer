@@ -7,13 +7,15 @@ from .encoder import Encoder
 
 
 class Transformer(nn.Module):
-    def __init__(self, src_vocab_size, tgt_vocab_size, device) -> None:
+    def __init__(
+        self, src_vocab_size, tgt_vocab_size, device, d_model=512, d_k=64
+    ) -> None:
         super().__init__()
-        self.input_embeddings = ComputeEmbeddings(src_vocab_size)
-        self.output_embeddings = ComputeEmbeddings(tgt_vocab_size)
-        self.encoder = Encoder()
-        self.decoder = Decoder()
-        self.linear_layer = nn.Linear(512, tgt_vocab_size)
+        self.input_embeddings = ComputeEmbeddings(src_vocab_size, d_model)
+        self.output_embeddings = ComputeEmbeddings(tgt_vocab_size, d_model)
+        self.encoder = Encoder(d_k, d_model)
+        self.decoder = Decoder(d_k, d_model)
+        self.linear_layer = nn.Linear(d_model, tgt_vocab_size)
         self.device = device
 
     def forward(self, inputs, outputs):

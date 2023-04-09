@@ -11,6 +11,6 @@ def test_attention():
     query = torch.randn(32, 10, 512)
     key = torch.randn(32, 10, 512)
     value = torch.randn(32, 10, 512)
-    attention = MultiHeadAttention()
+    attention = MultiHeadAttention(d_k=64, d_model=512)
     output = attention(query, key, value)
     assert list(output.shape) == [32, 10, 512]

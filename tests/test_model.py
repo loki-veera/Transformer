@@ -11,7 +11,7 @@ def test_encoder():
     """Test encoder forward pass using shapes."""
     torch.manual_seed(0)
     inputs = torch.randn(32, 10, 512)
-    encoder = Encoder()
+    encoder = Encoder(d_k=64, d_model=512)
     encoder_output = encoder(inputs)
     assert list(encoder_output.shape) == [32, 10, 512]
 
@@ -21,7 +21,7 @@ def test_decoder():
     encoder_outputs = torch.randn(32, 10, 512)
     decoder_inputs = torch.randn(32, 10, 512)
     mask = __compute_mask(decoder_inputs)
-    decoder = Decoder()
+    decoder = Decoder(d_k=64, d_model=512)
     decoder_output = decoder(encoder_outputs, decoder_inputs, mask)
     assert list(decoder_output.shape) == [32, 10, 512]
 

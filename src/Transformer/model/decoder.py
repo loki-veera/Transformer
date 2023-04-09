@@ -8,9 +8,9 @@ from .multi_head_attention import MultiHeadAttention
 class Decoder(nn.Module):
     """Decoder model."""
 
-    def __init__(self, n=6) -> None:
+    def __init__(self, d_k, d_model, n=3) -> None:
         super().__init__()
-        self.deocder = nn.ModuleList([DecoderLayer() for _ in range(n)])
+        self.deocder = nn.ModuleList([DecoderLayer(d_k, d_model) for _ in range(n)])
 
     def forward(self, encoder_outputs, outputs, mask):
         for decoder_layer in self.deocder:
@@ -21,13 +21,13 @@ class Decoder(nn.Module):
 class DecoderLayer(nn.Module):
     """Decoder definition."""
 
-    def __init__(self) -> None:
+    def __init__(self, d_k, d_model) -> None:
         super().__init__()
-        self.masked_attention = MultiHeadAttention()
-        self.decoder_attention = MultiHeadAttention()
-        self.decoder_linear1 = nn.Linear(512, 2048)
-        self.decoder_linear2 = nn.Linear(2048, 512)
-        self.layer_norm = nn.LayerNorm(512)
+        self.masked_attention = MultiHeadAttention(d_k, d_model)
+        self.decoder_attention = MultiHeadAttention(d_k, d_model)
+        self.decoder_linear1 = nn.Linear(d_model, 2048)
+        self.decoder_linear2 = nn.Linear(2048, d_model)
+        self.layer_norm = nn.LayerNorm(d_model)
 
     def forward(self, encoder_outputs, outputs, mask):
         stage_one_output = self.layer_norm(

@@ -4,15 +4,15 @@ from torch.nn.functional import softmax
 
 
 class MultiHeadAttention(nn.Module):
-    def __init__(self, num_attention_heads=8) -> None:
+    def __init__(self, d_k, d_model, num_attention_heads=8) -> None:
         super().__init__()
-        self.linear_q = nn.Linear(64, 64)
-        self.linear_k = nn.Linear(64, 64)
-        self.linear_v = nn.Linear(64, 64)
-        self.attention_output = nn.Linear(num_attention_heads * 64, 512)
+        self.linear_q = nn.Linear(d_k, d_k)
+        self.linear_k = nn.Linear(d_k, d_k)
+        self.linear_v = nn.Linear(d_k, d_k)
+        self.attention_output = nn.Linear(num_attention_heads * d_k, d_model)
         self.num_attention_heads = num_attention_heads
         self.dummy_param = nn.Parameter(
-            torch.sqrt(torch.Tensor([64])), requires_grad=False
+            torch.sqrt(torch.Tensor([d_k])), requires_grad=False
         )
         pass
 

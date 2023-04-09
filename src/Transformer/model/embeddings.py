@@ -3,9 +3,9 @@ from torch import nn
 
 
 class ComputeEmbeddings(nn.Module):
-    def __init__(self, vocab_size) -> None:
+    def __init__(self, vocab_size, d_model) -> None:
         super().__init__()
-        self.embed = nn.Embedding(vocab_size, 512)
+        self.embed = nn.Embedding(vocab_size, d_model)
         self.register_buffer("pos_embed", self.positional_encoding())
 
     def forward(self, inputs):
