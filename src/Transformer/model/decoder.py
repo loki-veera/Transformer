@@ -35,7 +35,7 @@ class DecoderLayer(nn.Module):
         )
         stage_two_output = self.layer_norm(
             stage_one_output
-            + self.decoder_attention(encoder_outputs, encoder_outputs, stage_one_output)
+            + self.decoder_attention(stage_one_output, encoder_outputs, encoder_outputs)
         )
         stage_three_output = self.layer_norm(
             stage_two_output + self.decoder_linear(stage_two_output)

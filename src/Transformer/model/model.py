@@ -17,7 +17,6 @@ class Transformer(nn.Module):
 
     def forward(self, inputs, outputs):
         embed_inputs, embed_outputs = self.__compute_embeddings(inputs, outputs)
-
         encoder_outputs = self.encoder(embed_inputs)
         mask = self.__decoder_mask(embed_outputs)
         decoder_outputs = self.decoder(encoder_outputs, embed_outputs, mask)

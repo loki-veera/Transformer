@@ -17,9 +17,11 @@ class MultiHeadAttention(nn.Module):
         bs = key.shape[0]
         single_embed_size = int(key.shape[-1] / self.num_attention_heads)
         tokens = key.shape[1]
-
+        query_tokens = query.shape[1]
         # Divide the data for multiple heads
-        query = query.reshape(bs, tokens, self.num_attention_heads, single_embed_size)
+        query = query.reshape(
+            bs, query_tokens, self.num_attention_heads, single_embed_size
+        )
         key = key.reshape(bs, tokens, self.num_attention_heads, single_embed_size)
         value = value.reshape(bs, tokens, self.num_attention_heads, single_embed_size)
 
@@ -32,7 +34,7 @@ class MultiHeadAttention(nn.Module):
         attention_weights = self.scaled_dot_product_attention(q, k, v, mask)
 
         # Concatenate and return the output
-        concatenated_weights = attention_weights.reshape(bs, tokens, -1)
+        concatenated_weights = attention_weights.reshape(bs, query_tokens, -1)
         out = self.attention_output(concatenated_weights)
         return out
 
