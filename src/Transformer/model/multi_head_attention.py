@@ -11,6 +11,9 @@ class MultiHeadAttention(nn.Module):
         self.linear_v = nn.Linear(64, 64)
         self.attention_output = nn.Linear(num_attention_heads * 64, 512)
         self.num_attention_heads = num_attention_heads
+        self.dummy_param = nn.Parameter(
+            torch.sqrt(torch.Tensor([64])), requires_grad=False
+        )
         pass
 
     def forward(self, query, key, value, mask=None):
@@ -45,7 +48,7 @@ class MultiHeadAttention(nn.Module):
         if mask is not None:
             dot_product = dot_product.masked_fill(mask == 0, 1e-9)
         # Scale the dot product
-        dot_product = dot_product / torch.sqrt(torch.Tensor([64]))
+        dot_product = dot_product / self.dummy_param
         # Compute the softmax and multiply with values
         attention_weights = torch.einsum(
             "ijkl, ijlr -> ikjr", [softmax(dot_product, dim=-1), v]

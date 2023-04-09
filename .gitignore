@@ -8,3 +8,7 @@ tests/__pycache__
 src/Transformer/model/__pycache__
 __pycache__/
 notebooks/
+europarl_data/
+data/
+*.pt
+src/Transformer/dataloader.py

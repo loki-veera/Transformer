@@ -7,7 +7,7 @@ from torchtext.datasets import Multi30k
 from tqdm import tqdm
 
 from .dataloader import DatasetTransforms
-from .model.model import Transformer
+from .model.Transformer import Transformer
 
 torch.manual_seed(0)
 
@@ -46,7 +46,7 @@ def main():
     src_vocab_size = len(data_transforms.vocab_transform[src_lang])
     tgt_vocab_size = len(data_transforms.vocab_transform[tgt_lang])
 
-    model = Transformer(src_vocab_size, tgt_vocab_size)
+    model = Transformer(src_vocab_size, tgt_vocab_size, device)
     for params in model.parameters():
         if params.dim() > 1:
             torch.nn.init.xavier_uniform_(params)
